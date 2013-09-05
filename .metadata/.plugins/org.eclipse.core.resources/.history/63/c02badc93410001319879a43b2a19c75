@@ -1,0 +1,11 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int b = 2;
+		System.out.println(b);
+		int i = b % 2;
+		System.out.println(i);
+		System.out.println((char) i );
+	}
+}

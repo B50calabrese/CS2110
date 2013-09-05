@@ -1,0 +1,17 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		/**
+		 * 0x0001, 0x0000, 0x1, 0,
+		                          0xFFF0, 0xFFFF, 0x0, 0,
+		                          0xFF6F, 0xFFFF, 0x6, 1,
+		                          0x13E2, 0x1312, 0xE, 1,
+		                          0x0800, 0x0000, 0x8, 2,
+		                          0x3291, 0x3391, 0x2, 2,
+		                          0x4234, 0x1234, 0x4, 3,
+		                          0xBEEF, 0xDEEF, 0xB, 3
+		 */
+		HW2Operations.setNibble(0xFFFF, 0x6, 1);
+	}
+}

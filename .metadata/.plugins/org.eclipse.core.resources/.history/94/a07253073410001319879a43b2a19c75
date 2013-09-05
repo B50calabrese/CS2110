@@ -1,0 +1,10 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		String s = "BDCD121";
+		System.out.println(s);
+		int i = HW2Bases.strxtoi(s);
+		System.out.println("ASCII VALUE: " + i);
+	}
+}

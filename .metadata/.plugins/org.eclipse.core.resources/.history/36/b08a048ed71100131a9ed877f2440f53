@@ -1,0 +1,8 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int num = HW2Operations.pack(0x1, 0x2, 0x3, 0x4);
+		System.out.printf("%x \n", num);
+	}
+}

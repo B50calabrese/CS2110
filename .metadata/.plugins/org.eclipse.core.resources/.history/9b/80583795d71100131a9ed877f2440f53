@@ -1,0 +1,8 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int num = HW2Operations.abs(0x00001234, 16);
+		System.out.printf("%x", num);
+	}
+}

@@ -1,0 +1,242 @@
+/**
+ * HW2 Part 2 - Coding with bitwise operators
+ *
+ * @author Antonio Calabrese
+ * 
+ * *** NOTE: The rules are different for each java file! ***
+ * 
+ * The only things you are allowed to use in your code are the following:
+ *	   - The bitwise operators |, &, ~, ^, <<, >>
+ *     - Increment and Decrement (++ and --).
+ *         - You may also add or subtract 1 from a number, but it must be only 1.
+ *     - Boolean operators ||, &&, and !, which are only allowed in if-statements.
+ *     - Conditional statements (if, if-else, switch-case, ? :).
+ *         - However, you may only handle up to two cases.
+ *         - You may only use up to 2 if/else-if statements.
+ *     - Equality comparisons (==, !=, <=, >=, <, >).
+ *
+ * You are not allowed to use anything not mentioned above. This includes the following,
+ * but is not an exhaustive list:
+ *     - Multiplication or Division
+ *     - Addition or Subtraction with numbers other than 1.
+ *          - Iteration in functions other than toString.
+ *          - The unsigned right shift operator >>> (C does not provide this operator).
+ *     - Modulus (%).
+ *     - Any functions found in Java libraries (especially the Math library).
+ *         - Example: Math.pow, Integer.bitCount, etc.
+ *     - Casting (you should not have cast anywhere!)
+ *          - Any Java 7 feature / standard library function.
+ *            (we will be grading using Java 6)
+ *      
+ *     - Switch-case ban, you may not use more than 2 if-statements, or two
+ *       case-statements using switch. (see the next point)
+ *     - Your code should be concise and simple. None of these functions should be more
+ *       than about 5-7 lines of code. If your code is any longer than this, then you are
+ *       doing it wrong or inefficiently.
+ *
+ * Remember that for this assignment, All bit masks must be written in hexadecimal.
+ * This is the convention for masks and makes it much easier for the programmer to
+ * understand the code. If you write a mask in any other base you will lose points.
+ *
+ * All of these functions accept ints as parameters because if you pass in a number
+ * (which is of type int by default) into a function accepting a byte, then the Java
+ * compiler will complain even if the number would fit into that type.
+ *    
+ * Now, keep in mind the return value is also an int. Please read the comments about how
+ * many significant bits to return and make sure that the other bits are not set or else
+ * you will not get any points for that test case.
+ * i.e if I say to return 6 bits and you return 0xFFFFFFFF, you will lose points.
+ *
+ * Definitions of types:
+ * nibble (nybble) - 4 bits
+ * byte - 8 bits
+ * short - 16 bits
+ * int - 32 bits
+ */
+public class HW2Operations
+{
+	/**
+	 * Set a 4-bit nibble in an int.
+	 * 
+	 * Ints are made of eight nibbles, numbered like so:
+	 *   7777 6666 5555 4444 3333 2222 1111 0000
+	 *
+	 * For a graphical representation of this:
+	 *   1 1 1 1 1 1                 
+	 *   5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 
+	 *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 *  |Nibble3|Nibble2|Nibble1|Nibble0|
+	 *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * 
+	 * Examples:
+	 *     setNibble(0xAAA5, 0x1, 0); // => 0xAAA1
+	 *     setNibble(0x56B2, 0xF, 3); // => 0xF6B2
+	 * 
+	 * @param num The int that will be modified.
+	 * @param nibble The nibble to insert into the integer.
+	 * @param which Selects which nibble to modify - 0 for least-significant nibble.
+	 *            
+	 * @return The modified int.
+	 */
+	public static int setNibble(int num, int nibble, int which)
+	{
+		/**
+		 * I seperated this method into two parts which will be explained, but I will explain what I wanted to acheive. Ultimately I wanted
+		 * to end up with the masks in the form of FFFN, for the nibble mask where N is the nibble, and ABCF, for the number mask, noting that
+		 * this is a specific case it doesn't matter which nibble is changed. The reason I did this is because it makes the problem a 
+		 * simple and at the end.
+		 */
+		
+		
+		/**
+		 * To create the nibble mask in the form of FFFN, I first placed set the appropriate space for the nibble to F. Then I negated it so that
+		 * when I did an OR with the nibble, which is shifted to the appropriate bit, everything would stay on except for the bits in the
+		 * nibble that were off.
+		 */
+		//Creation of the nibble mask
+		int nibbleMask = 0xF << (which * 4);
+		nibbleMask = ~nibbleMask;
+		nibble = nibble << (which * 4);
+		nibbleMask = (nibbleMask | nibble);
+		
+		/**
+		 * The number mask was much simpler because I just needed the nibble spot to be completely on. Once that was shifted into the correct
+		 * place, it was a simple OR to correct the other bits.
+		 */
+		//Creation of the number mask
+		int numMask = 0xF << (which * 4);
+		numMask = (numMask | num);
+		
+		return (nibbleMask & numMask);
+	}
+	
+	/**
+	 * Get a short from an int.
+	 * 
+	 * Examples: 
+	 *     getShort(0x56781234, 0); // => 0x1234
+	 *     getShort(0xFF254545, 1); // => 0xFF25
+	 * 
+	 * @param num The int to get a short from.
+	 * @param which Determines which short gets returned - 0 for least-significant short.
+	 *            
+	 * @return A short corresponding to the "which" parameter from num.
+	 */
+	public static int getShort(int num, int which)
+	{
+		if(which == 0){
+			num = num << 16;
+		} 
+		num = num >>> 16;
+		return num;
+	}
+
+	/**
+	 * Pack 4 nibbles into a short.
+	 * 
+	 * The nibbles should be placed consecutively in the 16 bit short in the order
+	 * specified by the parameters.
+	 * 
+	 * Example:
+	 *     pack(0x1, 0x2, 0x3, 0x4); // => 0x1234
+	 *     pack(0xB, 0xE, 0xE, 0xF); // => 0xBEEF
+	 * 
+	 * @param n1 Most significant nibble (will always be a 4-bit number).
+	 * @param n2 2nd nibble (will always be a 4-bit number).
+	 * @param n3 3rd nibble (will always be a 4-bit number).
+	 * @param n4 4rd nibble (will always be a 4-bit number).
+	 *            
+	 * @return a 16-bit value formatted like so: n1n2n3n4
+	 */
+	public static int pack(int n1, int n2, int n3, int n4)
+	{
+		/**
+		 * To do this method, I aligned each nibble correctly, and then did a simple OR to take each bit from each individual
+		 * nibble.
+		 */
+		n1 = n1 << 12;
+		n2 = n2 << 8;
+		n3 = n3 << 4;
+		return (n1 | n2 | n3 | n4);
+	}
+	
+	/**
+	 * Take the absolute value of an n-bit number.
+	 * 
+	 * Examples:
+	 *     abs(0x00001234, 16); // => 0x00001234
+	 *     abs(0x00001234, 13); // => 0x00000DCC
+	 * 
+	 * Note: We will only pass in values 1 to 31 for n.
+	 * 
+	 * @param num An n-bit 2's complement number.
+	 * @param n The bit length of the number.
+	 * @return The n-bit absolute value of num.
+	 */
+	public static int abs(int num, int n)
+	{
+		/**
+		 * This method had to simple cases, either the number was negative or positive. I created a mask of the correct bit
+		 * length to test if the number was negative. If it was positive I would just return the number given. If it was negative
+		 * I did a simple negation, and then addition to convert the correct part into a positive number, and then shifted the bits
+		 * to get rid of leading bits that were converted.
+		 */
+		int mask = 0x1;
+		mask = mask << n-1;
+		if((mask & num) != 0x0){
+			num = ~num;
+			num ++;
+			num = num << (32 - n);
+			num = num >> (32 - n);
+		}
+		return num;
+	}
+
+	/**
+	 * NOTE: For this method, you may only use &, |, and ~.
+	 *
+	 * Perform an exclusive-or on two 32-bit ints.
+	 *
+	 * Examples:
+	 *     xor(0xFF00FF00, 0x00FF00FF); // => 0xFFFFFFFF
+	 *     xor(0x12345678, 0x87654321); // => 0x95511559
+	 * 
+	 * @param num1 An int
+	 * @param num2 Another int
+	 *
+	 * @return num1 ^ num2
+	 */
+	public static int xor(int num1, int num2)
+	{
+		/**
+		 * For this method I thought about it similar to the logic gate circuits we created. We need the truth table to look like the following:
+		 * A | B | A XOR B
+		 * T | T |    F
+		 * T | F |    T
+		 * F | T |    T
+		 * F | F |    F
+		 * To do this we invert one of the inputs to seperate AND statements. Once we get those results we OR them together and get XOR.
+		 */
+		int notA = (~num1) & num2;
+		int notB = (~num2) & num1;
+		int result = notA | notB;
+		return result;
+	}
+	
+	/**
+	 * Return true if the given number is a power of 2.
+	 * 
+	 * Examples:
+	 *     powerOf2(1024); // => true
+	 *     powerOf2(23);   // => false
+	 *
+	 * Note: Make sure you handle ALL the cases!
+	 * 
+	 * @param Num a 32-bit int. Since this is an int, it is SIGNED!
+	 * @return true if num is a power of 2.
+	 */
+	public static boolean powerOf2(int num)
+	{
+		return ((num & (num--))== 0x0);
+	}
+}

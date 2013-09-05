@@ -1,0 +1,8 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int num = HW2Operations.setNibble(0xACCD, 0xB, 2);
+		System.out.printf("%x", num);
+	}
+}

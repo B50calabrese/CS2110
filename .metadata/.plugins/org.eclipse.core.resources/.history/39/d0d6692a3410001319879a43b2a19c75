@@ -1,0 +1,10 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int b = 10110;
+		System.out.println(b);
+		String s = HW2Bases.itostrb(b);
+		System.out.println(s);
+	}
+}

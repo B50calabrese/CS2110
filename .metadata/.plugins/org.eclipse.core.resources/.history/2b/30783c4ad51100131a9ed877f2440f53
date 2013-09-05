@@ -1,0 +1,8 @@
+
+public class MyHW2Tester {
+
+	public static void main(String[] args){
+		int num = HW2Operations.getShort(0x56781234, 0);
+		System.out.printf("%x \n", num);
+	}
+}

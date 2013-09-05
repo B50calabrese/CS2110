@@ -1,0 +1,17 @@
+Antonio Calabrese
+August 21, 2013
+part3.txt
+
+1) 
+	a) The register shows the value 1b
+	b) The output pin has the value 01
+
+2) When the button is pressed, the register clears its value setting it to the default of 00 and the output pin has the value 00 as well, however, when the circuit ticks, the register goes back to 1b and the output goes back to 01.
+
+3) When the ticks are disabled and I poke the register setting the value to 55, nothing happens to the rest of the circuit, because the circuit isn't ticking.
+
+4) When wires are red, this shows a short circuit has occured. 
+
+5) A blue wire indicates that the wire is not connected to anything.
+
+6) True
