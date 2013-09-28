@@ -1,0 +1,13 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	OLOOP             3005
+//	ILOOP             3008
+//	NIF               301A
+//	IOUT              301C
+//	OOUT              3020
+//	ARRAY             3021
+//	LENGTH            3022
+//	ANSWER            3023
+
